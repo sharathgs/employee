@@ -13,9 +13,11 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -26,9 +28,8 @@ import com.hcl.employee.dto.ResponseDto;
 import com.hcl.employee.model.Employee;
 import com.hcl.employee.service.EmployeeService;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@AutoConfigureMockMvc
+@RunWith(MockitoJUnitRunner.class)
+@WebAppConfiguration
 public class EmployeeControllerTest {
 	
 	
@@ -40,15 +41,13 @@ public class EmployeeControllerTest {
 	@InjectMocks
 	EmployeeController employeeController;
 	
-	@Autowired
-    private WebApplicationContext wac;
 	
 	Employee employee;
 
 	@Before
 	public void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
         employee = new Employee(1,"Sharath","Dasarahalli","Training",1234567890L, 24, "Single");
+        this.mockMvc = MockMvcBuilders.standaloneSetup(employeeController).build();
 	}
 	
 	//controller test for insertion
