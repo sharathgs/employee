@@ -4,6 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,9 +58,37 @@ public class EmployeeControllerTest {
 	public void addEmployeeTest() throws Exception
 	{
 		mockMvc.perform(MockMvcRequestBuilders.post("/employee/insertion").contentType(MediaType.APPLICATION_JSON)
-				.accept(MediaType.ALL).content(asJsonString(employee)));
+				.accept(MediaType.ALL).content(asJsonString("Employee added successfully")));
+	}
+	
+	
+	//controller test for getting or fetching data
+	@Test
+	public void getEmployeeTest() throws Exception
+	{
+		List<Employee> employeeList = new ArrayList<Employee>();
+		employeeList.add(employee);
+		employeeList.add(employee);
+		mockMvc.perform(MockMvcRequestBuilders.get("/employee/getEmployee").contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.ALL).content(asJsonString(employeeList)));
 	}
 
+	
+	//controller test for updating employee details
+	@Test
+	public void updateEmployeeTest() throws Exception
+	{
+		mockMvc.perform(MockMvcRequestBuilders.post("/employee/updateEmployee?id=1&employeeName=Sharath&employeeaddress=Dasarahalli&phoneno=1234567890").contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.ALL).content(asJsonString("Employee updated successfully")));
+	}
+	
+	//controller test for insertion negative
+		@Test
+		public void addEmployeeTestNegative() throws Exception
+		{
+			mockMvc.perform(MockMvcRequestBuilders.post("/employee/insertion").contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.ALL).content(asJsonString("Employee added successfully")));
+		}
 	
 	public static String asJsonString(final Object obj) {
 		try {

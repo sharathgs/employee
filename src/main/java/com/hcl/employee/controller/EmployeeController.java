@@ -3,6 +3,8 @@ package com.hcl.employee.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,24 +25,27 @@ public class EmployeeController {
 	
 	//controller for adding employee
 	@PostMapping(value = "/insertion")
-	public ResponseDto addemployee(Employee employee)
+	public ResponseEntity addemployee(Employee employee)
 	{
-		return employeeService.addEmployee(employee);		
+		ResponseDto responseDto = employeeService.addEmployee(employee);
+		return new ResponseEntity<ResponseDto>(responseDto,HttpStatus.CREATED);		
 	}
 	
 	//controller for getting or fetching employees
 	@GetMapping(value = "/getEmployee")
-	public List getEmployee()
+	public ResponseEntity<List> getEmployee()
 	{
-		return (List) employeeService.getEmployees();
+		List employeeData =  (List) employeeService.getEmployees();
+		return  new ResponseEntity<List>(employeeData,HttpStatus.OK);
 	}
 	
 	//contoller for updating employee
 	@PostMapping(value = "/updateEmployee")
-	public ResponseDto updateEmployee(@RequestParam int id, @RequestParam String employeeName,
+	public ResponseEntity<ResponseDto> updateEmployee(@RequestParam int id, @RequestParam String employeeName,
 			@RequestParam String employeeaddress, @RequestParam Long phoneno)
 	{
-		return employeeService.updateEmployee(id, employeeName, employeeaddress, phoneno);
+		ResponseDto responseDto = employeeService.updateEmployee(id, employeeName, employeeaddress, phoneno);
+		return new ResponseEntity<ResponseDto>(responseDto,HttpStatus.CONTINUE);
 	}
 
 }
